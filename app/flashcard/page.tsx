@@ -13,7 +13,7 @@ interface FlashcardFormProps {
   onAddFlashcard: (flashcard: FlashcardType) => void;
 }
 
-const FlashcardForm: React.FC<FlashcardFormProps> = ({ onAddFlashcard }) => {
+export default function FlashcardForm() {
   const [description, setDescription] = useState<string>('');
   const [body, setBody] = useState<string>('');
   const [topic, setTopic] = useState<string>('');
@@ -28,7 +28,6 @@ const FlashcardForm: React.FC<FlashcardFormProps> = ({ onAddFlashcard }) => {
       topic
     };
     
-    onAddFlashcard(newFlashcard);
     
     // Reset form fields
     setDescription('');
@@ -98,5 +97,4 @@ const FlashcardForm: React.FC<FlashcardFormProps> = ({ onAddFlashcard }) => {
   );
 };
 
-export default FlashcardForm;
 
