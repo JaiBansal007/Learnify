@@ -4,6 +4,8 @@ import { Eye, EyeOff, Mail, Lock, User, Book } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Loader1 from '@/Components/Loaders/Loader1';
+import { toast } from 'react-hot-toast';
+import { useEffect } from 'react';
 interface FormErrors {
   name?: string;
   grade?: string;
@@ -70,32 +72,40 @@ const RegisterPage: React.FC = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0 && termsAccepted;
   };
+  const registerUser = async () => {
+    axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/register`, {
+      name,
+      grade,
+      email,
+      instituteName,
+      password,
+    }).then((response) => {
+      localStorage.setItem('token', response.data.token);
+      
+    }).catch((error:any) => {
+      if (error.response.status === 422) {
+        setErrors(error.response.data.errors);
+      } else {
+        alert('An error occurred. Please try again later.');
+      }
+    }).finally(() => {
+      setIsLoading(false);
+    });
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     
     if (validateForm()) {
       setIsLoading(true);
-      
-      // Simulate API call
-      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
-        name,
-        grade,
-        email,
-        instituteName,
-        password,
-      }).then(() => {
-        router.push('/');
-      }).catch((error:any) => {
-        if (error.response.status === 422) {
-          setErrors(error.response.data.errors);
-        } else {
-          alert('An error occurred. Please try again later.');
+      toast.promise(
+        registerUser(),{
+          loading: "Creating account...",
+          success: <b>Account created successfully!</b>,
+          error: "Sign up failed. Please try again later.",
         }
-      }).finally(() => {
-        setIsLoading(false);
-      });
-    }
+      );
+      }
   };
 
   const togglePasswordVisibility = (): void => {
@@ -133,9 +143,13 @@ const RegisterPage: React.FC = () => {
   const handleTermsChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setTermsAccepted(e.target.checked);
   };
-  if(isLoading){
-    return <Loader1 />;
-  }
+  useEffect(() => {
+      if(localStorage.getItem('token')){
+        toast.error('You are already logged in');
+        router.push('/');
+      }
+    }
+    , []);
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

@@ -1,15 +1,30 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-
+import { useEffect } from 'react';
+import {useRouter} from 'next/navigation';
+import { toast } from 'react-hot-toast';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  
+  const [show, setShow] = useState(true);
+  const router=useRouter();
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  const logout=()=>{
+    setShow(true);
+    localStorage.removeItem("token");
+    toast.success("Logout Successfully");
+    router.push("/auth/login");
+  };
+  useEffect(() => {
+    if(localStorage.getItem("token")){
+      setShow(false);
+    }else{
+      setShow(true);
+    }
+  }, [logout,router]);
   return (
     <nav className="bg-gray-800 shadow-lg">
       <div className="max-w-6xl mx-auto px-4">
@@ -29,11 +44,13 @@ const Navbar = () => {
             </div>
           </div>
           
-          {/* Secondary Nav (hidden on mobile) */}
-          <div className="hidden md:flex items-center space-x-1">
+          {show?(<>
+            <div className="hidden md:flex items-center space-x-1">
             <a href="/auth/login" className="py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded transition duration-300">Login</a>
             <a href="/auth/signin" className="py-2 px-3 bg-transparent border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded transition duration-300">Signup</a>
-          </div>
+          </div></>):(<div className="hidden md:flex items-center space-x-1">
+          <button className="py-2 px-3 bg-transparent border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded transition duration-300" onClick={logout}>Logout</button>
+          </div>)}
           
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">

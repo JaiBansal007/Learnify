@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, FormEvent, ChangeEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import axios from 'axios';
 import Loader1 from '@/Components/Loaders/Loader1';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 interface FormErrors {
   email?: string;
@@ -45,17 +46,23 @@ const LoginPage: React.FC = () => {
       setIsLoading(true);
       
       // Simulate API call
-      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`,{
-        email,
-        password
-      }).then((response:any) => {
-        router.push('/');
-      }).catch((error:any) => {
-        console.error(error);
-      }).finally(() => {
-        setIsLoading(false);
-      })
-
+      toast.promise(
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}auth/login`, {
+          email,
+          password,
+        }),
+        {
+          loading: "Signing in...",
+          success: "Signed in successfully",
+          error: "Incorrect email or password",
+        }
+      ).then((response) => {
+        localStorage.setItem("token", response.data.token);
+        router.push("/");
+      }).catch((error) => {
+        console.error("Login failed:", error);
+      });
+      
       setIsLoading(false);
     }
   };
@@ -71,7 +78,13 @@ const LoginPage: React.FC = () => {
   const togglePasswordVisibility = (): void => {
     setShowPassword(!showPassword);
   };
-
+  useEffect(() => {
+    if(localStorage.getItem('token')){
+      toast.error('You are already logged in');
+      router.push('/');
+    }
+  }
+  , []);
   if(isLoading){
     return <Loader1 />;
   }
