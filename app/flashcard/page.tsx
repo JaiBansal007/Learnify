@@ -31,7 +31,7 @@ export default function Flashcard(){
         toast.error("Login First");
       } else {
         toast.promise(axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/flashcard`, 
+          `${process.env.NEXT_PUBLIC_API_URL}flashcard`, 
           { topic: topic }, // Fix: Send only topic in the body
           {
             headers: {

@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-
+  console.log(process.env.NEXT_PUBLIC_API_URL);
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
   };
