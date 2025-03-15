@@ -35,7 +35,7 @@ export default function Flashcard(){
           { topic: topic }, // Fix: Send only topic in the body
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Fix: Use "Bearer" if required
+              Authorization: `bearer ${token}`, // Fix: Use "Bearer" if required
               "Content-Type": "application/json"
             }
           }
