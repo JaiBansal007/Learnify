@@ -41,6 +41,8 @@ const Navbar = () => {
             <div className="hidden md:flex items-center space-x-1">
               <a href="/" className="py-5 px-3 text-white hover:text-gray-300">Home</a>
               <a href="/flashcard" className="py-5 px-3 text-white hover:text-gray-300">FlashCard</a>
+              <a href="/Doubt" className="py-5 px-3 text-white hover:text-gray-300">Doubt</a>
+              <a href="/roadmap" className="py-5 px-3 text-white hover:text-gray-300">RoadMap</a>
             </div>
           </div>
           
@@ -63,10 +65,11 @@ const Navbar = () => {
       
       {/* Mobile Menu */}
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
-        <a href="#" className="block py-2 px-4 text-white hover:bg-gray-700">Home</a>
-        <a href="#" className="block py-2 px-4 text-white hover:bg-gray-700">Features</a>
-        <a href="#" className="block py-2 px-4 text-white hover:bg-gray-700">About</a>
-        <a href="#" className="block py-2 px-4 text-white hover:bg-gray-700">Contact</a>
+        <a href="/" className="block py-2 px-4 text-white hover:bg-gray-700">Home</a>
+        <a href="/flashcard" className="block py-2 px-4 text-white hover:bg-gray-700">FlashCard</a>
+        <a href="/Doubt" className="block py-2 px-4 text-white hover:bg-gray-700">Doubt</a>
+        <a href="/Roadmap" className="block py-2 px-4 text-white hover:bg-gray-700">RoadMap</a>
+
         <div className="py-2 px-4 flex flex-col space-y-2">
           <a href="#" className="py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-center rounded transition duration-300">Login</a>
           <a href="#" className="py-2 px-3 bg-transparent border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white text-center rounded transition duration-300">Signup</a>
